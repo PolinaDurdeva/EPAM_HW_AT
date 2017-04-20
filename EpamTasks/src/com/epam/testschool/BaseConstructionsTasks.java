@@ -1,4 +1,4 @@
-package Tasks;
+package com.epam.testschool;
 
 import java.io.BufferedReader;
 import java.io.IOException;
