@@ -1,0 +1,14 @@
+.idea/
+*.iml
+*.iws
+log/
+target/
+#Eclipse configuration
+.classpath
+.project
+*.class
+*.pydevproject*
+*.settings*
+#Custom
+org.eclipse.*
+
