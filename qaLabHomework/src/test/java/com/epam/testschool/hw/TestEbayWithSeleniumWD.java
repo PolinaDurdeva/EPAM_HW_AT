@@ -56,7 +56,6 @@ public class TestEbayWithSeleniumWD {
 			for (WebElement a: links){
 				String title = a.getAttribute("title").toLowerCase();			
 				if (!title.contains(rightQuery)){
-					System.out.println(title);
 					assertTrue(false, "Query "+ wrongQuery 
 							+ " was not corrected or title doesn't contain query "+ rightQuery + " in title: "
 							+ title);				
@@ -118,7 +117,6 @@ public class TestEbayWithSeleniumWD {
 				driver.get(href);
 				WebElement itemTitle = driver.findElement(By.xpath(XPATH_ITEM_TITLE));
 				String title = itemTitle.getText().toLowerCase();
-				System.out.println(title);
 				if (!title.contains(snippet)){
 					System.out.println(title);
 					assertTrue(false);	
