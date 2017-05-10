@@ -36,7 +36,10 @@ public class TestNgTestBase {
 
   @BeforeMethod
   public void initWebDriver() {
-    driver = WebDriverPool.DEFAULT.getDriver(gridHubUrl, capabilities);
+	System.setProperty("webdriver.chrome.driver", "/home/polina/Programs/chromedriver");
+	driver = WebDriverPool.DEFAULT.getDriver(gridHubUrl, capabilities);
+	System.out.println(driver);
+    //driver = WebDriverPool.DEFAULT.getDriver(gridHubUrl, capabilities);
   }
 
   @AfterSuite(alwaysRun = true)
