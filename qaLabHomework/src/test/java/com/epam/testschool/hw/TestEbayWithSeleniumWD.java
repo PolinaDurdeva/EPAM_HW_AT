@@ -22,11 +22,14 @@ public class TestEbayWithSeleniumWD {
 	private static final String URL = "http://ebay.com";
 	private static final String XPATH_SEARCH = "//*[@id=\"gh-ac\"]";
 	private static final String XPATH_BTN_SEARCH = "//*[@id=\"gh-btn\"]";
-	private static final String XPATH_ELEMENT = "//a[@class = \"vip\"]";
+	private static final String XPATH_ELEMENT = "//*[@id=\"Results\"]//h3/a";
 	private static final String XPATH_NEXT_PAGE = "//a[@class = \"gspr next\"]";
 	private static final String XPATH_ITEM_TITLE = "//h1[@id = \"itemTitle\"]";
-	private static final String UNNECESSARY_TITLE_SUBSTRING  = "нажмите на эту ссылку, чтобы перейти к ";
-	private static final int LIMIT_PAGES = 2;
+	private static final String NEW_ADVERTICEMENT_RU = "НОВОЕ ОБЪЯВЛЕНИЕ";
+	private static final String NEW_ADVERTICEMENT_EN = "NEW ADVERTICEMENT";
+	private static final String DOTS = "...";
+	private static final String ATTRIBUTE_HREF = "href";
+	private static final int LIMIT_PAGES = 1;
 	private WebDriver driver;
 	
 	@Test(dataProvider = "queriesForCheckTyposCorrection")
@@ -47,30 +50,38 @@ public class TestEbayWithSeleniumWD {
 		}
 		List<WebElement> links = null;
 		int countPages = 0;
-		while(countPages < LIMIT_PAGES){
+		boolean isNextPageAvaliable = true;
+		String nextPageHref = "";
+		while(countPages < LIMIT_PAGES && isNextPageAvaliable ){
 			try {
 				links = driver.findElements(By.xpath(XPATH_ELEMENT));		
 			} catch (WebDriverException noGoods) {
 				Assert.fail("No " + XPATH_ELEMENT + "element on page!", noGoods);
 			}
 			for (WebElement a: links){
-				String title = a.getAttribute("title").toLowerCase();			
-				if (!title.contains(rightQuery)){
-					assertTrue(false, "Query "+ wrongQuery 
-							+ " was not corrected or title doesn't contain query "+ rightQuery + " in title: "
-							+ title);				
+				String title = a.getText()
+						.replace(DOTS, "")
+						.replace(NEW_ADVERTICEMENT_EN, "")
+						.replace(NEW_ADVERTICEMENT_RU, "")
+						.toLowerCase();
+				assertTrue(title.contains(rightQuery), "Query "+ wrongQuery 
+						+ " was not corrected or title doesn't contain query "+ rightQuery 
+						+ " in title: "	+ title);
+			}
+			if (countPages != LIMIT_PAGES - 1) {
+				try {
+					WebElement nextPageLink = driver.findElement(By.xpath(XPATH_NEXT_PAGE));
+					nextPageHref = nextPageLink.getAttribute(ATTRIBUTE_HREF);
+					
+				} catch (WebDriverException noNextPage) {
+					isNextPageAvaliable = false;
+				}
+				if (isNextPageAvaliable){
+					driver.get(nextPageHref);				
 				}
 			}
-			try {
-				WebElement nextPageLink = driver.findElement(By.xpath(XPATH_NEXT_PAGE));
-				String nextPageHref = nextPageLink.getAttribute("href");
-				driver.get(nextPageHref);
-				countPages++;
-			} catch (WebDriverException noNextPage) {
-				break;
-			}
+			countPages++;
 		}
-		assertTrue(true);
 	}
 	@Test(dataProvider = "queriesForCheckSnippet")
 	public void checkSnippet(String query){
@@ -89,44 +100,52 @@ public class TestEbayWithSeleniumWD {
 			Assert.fail("Button \"search\" is not found on page", noButton);			
 		}
 		List<WebElement> linkItems = null;
-		ArrayList<String> hrefs = new ArrayList<String>();
-		ArrayList<String> snippetTitles = new ArrayList<String>();
 		String nextPageHref  = "";
 		int countPages = 0;
 		boolean isNextPageAvaliable = true;
 		while(countPages < LIMIT_PAGES && isNextPageAvaliable){
-			countPages++;
 			try {
 				linkItems = driver.findElements(By.xpath(XPATH_ELEMENT));		
 			} catch (NoSuchElementException noGoods) {
 				Assert.fail("No " + XPATH_ELEMENT + "element on page!", noGoods);
 			}
+			ArrayList<String> hrefs = new ArrayList<String>();
+			ArrayList<String> snippetTitles = new ArrayList<String>();
 			for (WebElement a: linkItems){
-				snippetTitles.add(a.getAttribute("title").toLowerCase().replace(UNNECESSARY_TITLE_SUBSTRING, ""));
-				hrefs.add(a.getAttribute("href"));
+				snippetTitles.add(
+						a.getText()
+						.replace(DOTS, "")
+						.replace(NEW_ADVERTICEMENT_EN, "")
+						.replace(NEW_ADVERTICEMENT_RU, "")
+						.toLowerCase()
+						);
+				hrefs.add(a.getAttribute(ATTRIBUTE_HREF));
 			}
-			try {
-				WebElement nextPageLink = driver.findElement(By.xpath(XPATH_NEXT_PAGE));
-				nextPageHref = nextPageLink.getAttribute("href");				
-			} catch (NoSuchElementException noNextpage) {
+			if (countPages != LIMIT_PAGES - 1) {				
+				try {
+					WebElement nextPageLink = driver.findElement(By.xpath(XPATH_NEXT_PAGE));
+					nextPageHref = nextPageLink.getAttribute(ATTRIBUTE_HREF);				
+				} catch (NoSuchElementException noNextpage) {
+					isNextPageAvaliable = false;
+				}
+			} else {
 				isNextPageAvaliable = false;
 			}
+			System.out.println(hrefs.size());
 			for (int i = 0; i < hrefs.size(); i++) {
+				System.out.println(i);
 				String href = hrefs.get(i);
-				String snippet = snippetTitles.get(i);
+				String snippet = snippetTitles.get(i).trim();
 				driver.get(href);
 				WebElement itemTitle = driver.findElement(By.xpath(XPATH_ITEM_TITLE));
 				String title = itemTitle.getText().toLowerCase();
-				if (!title.contains(snippet)){
-					System.out.println(title);
-					assertTrue(false);	
-				}				
+				assertTrue(title.contains(snippet), "Title: "+ title + " doesn't contain:\n"+snippet);			
 			}
 			if (isNextPageAvaliable){
 				driver.get(nextPageHref);				
 			}
+			countPages++;
 		}
-		assertTrue(true);
 	}
 	@DataProvider
 	public Object[][] queriesForCheckTyposCorrection() {
@@ -147,6 +166,7 @@ public class TestEbayWithSeleniumWD {
 
 	@BeforeClass
 	public void setUpChromeDriver() {
+		//TODO: add this property in pom.xml
 		System.setProperty("webdriver.chrome.driver", CHROME_DRIVER_PATH_PROPERTY);
 		driver = new ChromeDriver();
 	}
