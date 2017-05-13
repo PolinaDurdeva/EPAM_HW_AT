@@ -131,9 +131,7 @@ public class TestEbayWithSeleniumWD {
 			} else {
 				isNextPageAvaliable = false;
 			}
-			System.out.println(hrefs.size());
 			for (int i = 0; i < hrefs.size(); i++) {
-				System.out.println(i);
 				String href = hrefs.get(i);
 				String snippet = snippetTitles.get(i).trim();
 				driver.get(href);
