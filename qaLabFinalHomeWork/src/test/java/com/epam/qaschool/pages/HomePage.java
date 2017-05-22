@@ -1,4 +1,4 @@
-package com.example.pages;
+package com.epam.qaschool.pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -7,15 +7,26 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 /**
- * Sample page
+ * Home page
  */
 public class HomePage extends Page {
 
-  @FindBy(how = How.TAG_NAME, using = "h1")
-  @CacheLookup
-  public WebElement header;
-
-  public HomePage(WebDriver webDriver) {
-    super(webDriver);
-  }
+	public HomePage(WebDriver webDriver) {
+		super(webDriver);
+		log.debug("HomePagge was created!");
+	}
+	
+	public void openPage(String URL){
+		driver.get(URL);
+	}
+	
+	public String getPageTitle(){
+		String title = driver.getTitle();
+		return title;
+	}
+	
+	public boolean verifyBasePageTitle() {
+		String expectedPageTitle="Ebay";
+		return getPageTitle().contains(expectedPageTitle);
+	}
 }
