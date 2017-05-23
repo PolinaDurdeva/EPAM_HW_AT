@@ -15,6 +15,7 @@ import com.epam.qaschool.pages.HomePage;
 import com.epam.qaschool.pages.LeftFilterPannel;
 import com.epam.qaschool.pages.ResultPage;
 import com.epam.qaschool.pages.SearchForm;
+import com.epam.qaschool.wrappers.ItemPrice;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.testng.Assert.assertTrue;
@@ -51,10 +52,13 @@ public class TestFilters extends TestNgTestBase{
 	@Test(dataProvider="requestsProductSearch", dataProviderClass=DataForTest.class)
 	public void testFiltersOnItemsPrice(String request, float leftBound, float rightBound){
 		searchForm.searchFor(request);
-		List<Float> itemPrices= leftFilterPannel.filterByPriceRange(leftBound,rightBound).getProductPrices();
+		List<ItemPrice> itemPrices= leftFilterPannel.filterByPriceRange(leftBound,rightBound).getProductPrices();
 		//assertThat(itemsPrices).hasSize(COUNT_ITEMS);
-		for (Float price: itemPrices) {
-			assertThat(price).isBetween(leftBound, rightBound);
+		for (ItemPrice price: itemPrices) {
+			assertTrue(
+					(price.getMaxPrice() <= rightBound && price.getMaxPrice() >= leftBound) ||
+					(price.getMinPrice() <= rightBound && price.getMinPrice() >= leftBound)
+					);
 		}
 	}
 
