@@ -11,11 +11,11 @@ import org.openqa.selenium.support.FindBy;
 import org.slf4j.LoggerFactory;
 
 public class ResultPage extends Page{
-	private static final String PART_PRICE_STRING = "руб.";
+	private static final String PART_PRICE_STRING = "руб.";		
 	private static final String PRICE_NUMBER_FROMAT = "###.##";
-	private static final String ITEMS_PRICES_XPATH = ".//*[@id='Results']//li[@class=\"lvprice prc\"]/span";
+	private static final String ITEMS_PRICES_XPATH = ".//*[@id='Results']//li[@class='lvprice prc']/span";
 	private static final String FREE_INTERNTIONAL_SHIPPING_XPATH = "";
-	private static final String COUNTRY_XPATH = "";
+	private static final String COUNTRY_XPATH = ".//*[@id='Results']//li//li[contains(.,'Страна') or contains(.,'From')]";
 	private static final String DESIRED_ITEMS_XPATH = "";
 	
 	@FindBy(xpath=ITEMS_PRICES_XPATH)
@@ -25,16 +25,20 @@ public class ResultPage extends Page{
 	private List<WebElement> itemCountriesOnSerp;
 	
 	@FindBy(xpath=DESIRED_ITEMS_XPATH)
-	private List<WebElement> desiredItemsOnSerp; 
+	private List<WebElement> productItemsOnSerp; 
 	
 	@FindBy(xpath=FREE_INTERNTIONAL_SHIPPING_XPATH)
-	private List<WebElement> itemShipping;
+	private List<WebElement> itemShippingConditions;
 
 	public ResultPage(WebDriver driver) {
 		super(driver);
 	}
 	
-	public List<Float> getPrices(){
+	public List<WebElement> getAllProductsOnSerp(){
+		return productItemsOnSerp;
+	}
+	
+	public List<Float> getProductPrices(){
 		DecimalFormat priceFormat = new DecimalFormat(PRICE_NUMBER_FROMAT);
         List<Float> prices = new ArrayList<Float>();
         for (WebElement itemPrice: itemPricesOnSerp) {
@@ -48,7 +52,7 @@ public class ResultPage extends Page{
 				log.debug("Extracted item price: {}", priceAsFloat);
 				prices.add(priceAsFloat);
 			} catch (ParseException e) {
-				log.debug("Price number format doesn't match with specidied format. Price: {}", priceAsString);
+				log.error("Price number format doesn't match with specidied format. Price: {}", priceAsString);
 			}
         }
         return prices;
@@ -56,11 +60,26 @@ public class ResultPage extends Page{
 	
 	public List<String> getItemsHrefs(){
         List<String> itemHrefs = new ArrayList<String>();
-        for (WebElement resultItem: desiredItemsOnSerp) {
+        for (WebElement resultItem: productItemsOnSerp) {
             String href = resultItem.getText();
             itemHrefs.add(href);
         }
         return itemHrefs;
 	}
 	
+	public List<String> getCountriesOfProduction(){
+		List<String> countries = new ArrayList<String>();
+		for (WebElement itemCountry: itemCountriesOnSerp) {
+			countries.add(itemCountry.getText());
+		}
+		return countries;
+	}
+	
+	public List<String> getIntrShipping(){
+		List<String> shippingConds = new ArrayList<String>();
+		for (WebElement itemShip: itemShippingConditions){
+			shippingConds.add(itemShip.getText().toLowerCase());
+		}
+		return shippingConds;
+	}
 }

@@ -12,4 +12,11 @@ public class DataForTest {
 						//{"кошилек", 200.55, 900.9} 
 		};
 	}
+	
+	@DataProvider
+	public static Object[][] requestsProduct() {
+		return new Object[][] { 
+				{"стабилизатор"}
+		};
+	}
 }

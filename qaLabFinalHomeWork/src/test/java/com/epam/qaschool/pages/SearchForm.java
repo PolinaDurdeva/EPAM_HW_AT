@@ -19,6 +19,7 @@ public class SearchForm extends Page {
 	}
 	
 	public ResultPage searchFor(String request){
+		searchBox.clear();
 		searchBox.sendKeys(request);
 		searchButton.click();
 		return new ResultPage(driver);
