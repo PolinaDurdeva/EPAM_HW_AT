@@ -44,7 +44,6 @@ public class TestFilters extends TestNgTestBase{
 	public void testFiltersByItemsPrice(String request, float leftBound, float rightBound){
 		searchForm.searchFor(request);
 		List<ItemPrice> itemPrices= leftFilterPannel.filterByPriceRange(leftBound,rightBound).getProductPrices();
-		//assertThat(itemsPrices).hasSize(COUNT_ITEMS);
 		for (ItemPrice price: itemPrices) {
 			 // Some product prices have two values: left bound and right bound.
 			 // In this case it tests that some of bounds is between specified bounds   
@@ -60,7 +59,7 @@ public class TestFilters extends TestNgTestBase{
 	 * @param request
 	 */
 	@Test(dataProvider="requestsProduct", dataProviderClass=DataForTest.class)
-	public void testFiltersOnMadeInUSOnly(String request){
+	public void testFiltersByMadeInUSOnly(String request){
 		searchForm.searchFor(request);		
 		List<String> itemCountries = leftFilterPannel.filterByCountryOptionsUSOnly().getCountriesOfProduction();
 		for (String country: itemCountries){
@@ -70,7 +69,7 @@ public class TestFilters extends TestNgTestBase{
 	}
 	
 	@Test(dataProvider="requestsProduct", dataProviderClass=DataForTest.class)
-	public void testFilterOnFreeShipping(String request){
+	public void testFilterByFreeShipping(String request){
 		searchForm.searchFor(request);
 		ResultPage filtered = leftFilterPannel.filterByFreeShipping();
 		int countItems = filtered.getCountItemsOnSerp();
@@ -78,7 +77,7 @@ public class TestFilters extends TestNgTestBase{
 	}
 	
 	@Test(dataProvider="requestsProduct", dataProviderClass=DataForTest.class)
-	public void testFilterOnAuction(String request){
+	public void testFilterByAuction(String request){
 		searchForm.searchFor(request);
 		ResultPage filtered = leftFilterPannel.filterByAuction();
 		int countItems = filtered.getCountItemsOnSerp();
@@ -86,7 +85,7 @@ public class TestFilters extends TestNgTestBase{
 	}
 	
 	@Test(dataProvider="requestsProduct", dataProviderClass=DataForTest.class)
-	public void testFilterOnBestPrice(String request){
+	public void testFilterByBestPrice(String request){
 		searchForm.searchFor(request);
 		FilterPopup popup = leftFilterPannel.getFilterPopupShowOnlyTab();
 		ResultPage filtered = popup.filterByTheBestOffer();
@@ -96,7 +95,7 @@ public class TestFilters extends TestNgTestBase{
 	}
 	
 	@Test(dataProvider="requestsProduct", dataProviderClass=DataForTest.class)
-	public void testFilterOnUsedState(String request){
+	public void testFilterByUsedState(String request){
 		searchForm.searchFor(request);
 		ResultPage results = leftFilterPannel.filterByUsedState();
 		for (String href : results.getItemsHrefs()) {
@@ -106,11 +105,11 @@ public class TestFilters extends TestNgTestBase{
 	}
 	
 	/**
-	 * Test that filter on "" returns goods which can be refunded
+	 * Test that filter by "Returns accepted" returns goods which can be refunded
 	 * @param request
 	 */
 	@Test(dataProvider="requestsProduct", dataProviderClass=DataForTest.class)
-	public void testFilterOnReturnConditions(String request){
+	public void testFilterByReturnConditions(String request){
 		searchForm.searchFor(request);
 		ResultPage results = leftFilterPannel.filterByReturnOption();
 		for (String href : results.getItemsHrefs()) {
