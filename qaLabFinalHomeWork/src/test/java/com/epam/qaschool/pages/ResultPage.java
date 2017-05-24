@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.slf4j.LoggerFactory;
 
@@ -33,21 +34,26 @@ public class ResultPage extends Page{
 	private static final String PRICE_NUMBER_FROMAT = "###.##";
 	private static final String ATTRIBUTE_HREF = "href";
 	
+	@CacheLookup
 	@FindBy(xpath=ITEM_PRICES_XPATH)
 	private List<WebElement> itemPricesOnSerp;
 	
+	@CacheLookup
 	@FindBy(xpath=COUNTRIES_XPATH)
 	private List<WebElement> itemCountriesOnSerp;
-	
+	@CacheLookup
 	@FindBy(xpath=DESIRED_ITEMS_XPATH)
 	private List<WebElement> productsOnSerp; 
 	
+	@CacheLookup
 	@FindBy(xpath=FREE_INTRN_SHIPPING_XPATH)
 	private List<WebElement> itemShippingConditions;
 	
+	@CacheLookup
 	@FindBy(xpath=AUCTION_BIDS_XPATH)
 	private List<WebElement> itemBetsOnAuction;
 	
+	@CacheLookup
 	@FindBy(xpath=BEST_PRICE_MARKERS_XPATH)
 	List<WebElement> bestPriceOffers;
 	

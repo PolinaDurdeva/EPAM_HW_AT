@@ -17,8 +17,6 @@ public class ProductPage extends Page{
 	private static final String REPAIRED_RU_TEXT            = "восстановлен";
 	private static final String REPAIRED_EN_TEXT            = "refurbished";
 	
-	
-	
 	@FindBy(xpath=POSSIBILITY_OF_REFUND_XPATH)
 	private WebElement returns;
 	

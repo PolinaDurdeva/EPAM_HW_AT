@@ -46,10 +46,13 @@ public class TestFilters extends TestNgTestBase{
 		List<ItemPrice> itemPrices= leftFilterPannel.filterByPriceRange(leftBound,rightBound).getProductPrices();
 		for (ItemPrice price: itemPrices) {
 			 // Some product prices have two values: left bound and right bound.
-			 // In this case it tests that some of bounds is between specified bounds   
+			 // In this case it tests that some of bounds is between specified bounds or
+			 // both of specified bounds inside obtained bounds
 			assertTrue(
 						(price.getMaxPrice() <= rightBound && price.getMaxPrice() >= leftBound) ||
-						(price.getMinPrice() <= rightBound && price.getMinPrice() >= leftBound)
+						(price.getMinPrice() <= rightBound && price.getMinPrice() >= leftBound) ||
+						(price.getMinPrice() >= leftBound  && price.getMaxPrice() <= rightBound),
+						String.format("Wrong price min: %s, max: %s ", price.getMinPrice(), price.getMaxPrice())
 					);
 		}
 	}

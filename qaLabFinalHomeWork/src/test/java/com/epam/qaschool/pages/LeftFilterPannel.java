@@ -2,6 +2,7 @@ package com.epam.qaschool.pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.slf4j.LoggerFactory;
 
@@ -18,31 +19,40 @@ public class LeftFilterPannel extends Page{
 	private static final String AUCTION_INPUT_XPATH        = ".//input[@name='LH_BuyingFormats' and @value='LH_Auction']";
 	private static final String SET_PRICE_BTN_XPATH        = ".//form[@name='price']/input[@type='submit']";
 	private static final String SEE_ALL_SHOW_ONLY_XPATH    = ".//span[@id='LH_ShowOnly']/following-sibling::span[@class='seeall']/button";
-		
+
+	@CacheLookup
 	@FindBy(xpath=FREE_SHIPPING_INPUT_XPATH)
 	private WebElement freeShippingCheckBox;
-	
+
+	@CacheLookup
 	@FindBy(xpath=US_ONLY_INPUT_XPATH)
 	private WebElement countryUSCheckBox;
 	
+	@CacheLookup
 	@FindBy(xpath=RETURN_OPTION_INPUT_XPATH)
 	private WebElement returnOptionCheckBox;
 	
+	@CacheLookup
 	@FindBy(xpath=USED_STATE_INPUT_XPATH)
 	private WebElement usedStateCheckBox;
 	
+	@CacheLookup
 	@FindBy(xpath=AUCTION_INPUT_XPATH)
 	private WebElement auctionCheckBox;
 	
+	@CacheLookup
 	@FindBy(xpath=LEFT_PRICE_INPUT_XPATH)
 	private WebElement leftBoundPriceTextInput;
 	
+	@CacheLookup
 	@FindBy(xpath=RIGHT_PRICE_INPUT_XPATH)
 	private WebElement rightBoundPriceTextInput;
 	
+	@CacheLookup
 	@FindBy(xpath=SET_PRICE_BTN_XPATH)
 	private WebElement setPriceButton;
 	
+	@CacheLookup
 	@FindBy(xpath=SEE_ALL_SHOW_ONLY_XPATH)
 	private WebElement seeAllShowOnlyBtn;
 	

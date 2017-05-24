@@ -7,8 +7,8 @@ public class DataForTest {
 	@DataProvider
 	public static Object[][] requestsProductSearch() {
 		return new Object[][] { 
-						{"стабилизатор", 5000.54, 6120.9},
-						{"наушники",     350,     499}, 
+						{"стабилизатор", 5000.5f, 6120.9f},
+						{"вентилятор",   350,     499}, 
 						{"термос",       300,     600} 
 		};
 	}
