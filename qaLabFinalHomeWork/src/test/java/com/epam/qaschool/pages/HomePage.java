@@ -1,19 +1,18 @@
 package com.epam.qaschool.pages;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.CacheLookup;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
+import org.slf4j.LoggerFactory;
 
 /**
  * Home page
  */
 public class HomePage extends Page {
+	
+	private final static org.slf4j.Logger log = LoggerFactory.getLogger(HomePage.class);
 
 	public HomePage(WebDriver webDriver) {
 		super(webDriver);
-		log.debug("HomePagge was created!");
+		log.debug("HomePage was created!");
 	}
 	
 	public void openPage(String URL){
@@ -26,7 +25,7 @@ public class HomePage extends Page {
 	}
 	
 	public boolean verifyBasePageTitle() {
-		String expectedPageTitle="Ebay";
+		String expectedPageTitle = "Ebay";
 		return getPageTitle().contains(expectedPageTitle);
 	}
 }

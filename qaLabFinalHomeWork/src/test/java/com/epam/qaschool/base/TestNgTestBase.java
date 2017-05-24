@@ -1,14 +1,14 @@
 package com.epam.qaschool.base;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.WebDriver;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Test;
 
 import ru.stqa.selenium.factory.WebDriverPool;
 
@@ -19,7 +19,7 @@ import com.example.util.PropertyLoader;
  */
 public class TestNgTestBase {
 
-	private static final String CHROME_DRIVER_PATH_PROPERTY = "/home/polina/Programs/chromedriver";
+	private static final String CHROME_DRIVER_PATH_PROPERTY = Paths.get("/", "home", "polina", "Programs", "chromedriver").toString(); 
 	protected static String gridHubUrl;
 	protected static String baseUrl;
 	protected static Capabilities capabilities;

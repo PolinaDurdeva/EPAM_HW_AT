@@ -10,7 +10,7 @@ public class FilterPopup extends Page{
 	private static final String SUBMIT_BTN_XPATH = ".//form[@id='see-all-form']//input[@type='submit']";
 	
 	@FindBy(xpath=BEST_OFFER_FILTER_XPATH)
-	private WebElement bestOfferInfoOnSerp;
+	private WebElement bestOfferCheckBox;
 	
 	@FindBy(xpath=SUBMIT_BTN_XPATH)
 	private WebElement submitAppliedFilterButton;
@@ -18,11 +18,11 @@ public class FilterPopup extends Page{
 	public FilterPopup(WebDriver driver) {
 		super(driver);
 	}
+
 	public ResultPage filterByTheBestOffer(){
-		bestOfferInfoOnSerp.click();
+		bestOfferCheckBox.click();
 		submitAppliedFilterButton.submit();
-		return new ResultPage(driver);
-		
+		return new ResultPage(driver);		
 	}
 
 }
