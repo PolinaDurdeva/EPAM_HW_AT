@@ -84,12 +84,12 @@ public class ResultPage extends Page{
         List<ItemPrice> prices = new ArrayList<ItemPrice>();
         for (WebElement itemPrice: itemPricesOnSerp) {
         	String[] priceAsString = null;
+        	priceAsString = itemPrice.getText()
+        			.replaceAll(RU_CURRENCY_REGEX, "")
+        			.replace(" ", "")
+        			.replace(',', '.')
+        			.split(PRISE_SEPARATOR);
         	try {
-				priceAsString = itemPrice.getText()
-						.replaceAll(RU_CURRENCY_REGEX, "")
-						.replace(" ", "")
-						.replace(',', '.')
-						.split(PRISE_SEPARATOR);
 				if (priceAsString.length == 1){
 					Float price = priceFormat.parse(priceAsString[0]).floatValue();
 					prices.add(new ItemPrice(price));
@@ -149,5 +149,10 @@ public class ResultPage extends Page{
 			log.debug("The best price offer: {}",offerText);
 		}
 		return bestPrices;
+	}
+
+	public ProductPage getProduct(String href){
+		driver.get(href);
+		return new ProductPage(driver);
 	}
 }

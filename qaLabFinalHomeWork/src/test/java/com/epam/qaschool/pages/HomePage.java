@@ -19,6 +19,14 @@ public class HomePage extends Page {
 		driver.get(URL);
 	}
 	
+	public SearchForm getSearchForm(){
+		return new SearchForm(driver);
+	}
+	
+	public LeftFilterPannel getLeftFilterPannel(){
+		return new LeftFilterPannel(driver);
+	}
+	
 	public String getPageTitle(){
 		String title = driver.getTitle();
 		return title;

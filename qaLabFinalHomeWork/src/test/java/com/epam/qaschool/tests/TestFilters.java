@@ -30,8 +30,8 @@ public class TestFilters extends TestNgTestBase{
 	public void initializePages(){
 		homePage = new HomePage(driver);
 		homePage.openPage(baseUrl);
-		searchForm = new SearchForm(driver);
-		leftFilterPannel = new LeftFilterPannel(driver);
+		searchForm = homePage.getSearchForm();
+		leftFilterPannel = homePage.getLeftFilterPannel();
 	}
 	
 	/**
@@ -102,8 +102,7 @@ public class TestFilters extends TestNgTestBase{
 		searchForm.searchFor(request);
 		ResultPage results = leftFilterPannel.filterByUsedState();
 		for (String href : results.getItemsHrefs()) {
-			driver.get(href);
-			assertTrue(new ProductPage(driver).isUsedState());
+			assertTrue(results.getProduct(href).isUsedState());
 		}
 	}
 	
@@ -116,8 +115,7 @@ public class TestFilters extends TestNgTestBase{
 		searchForm.searchFor(request);
 		ResultPage results = leftFilterPannel.filterByReturnOption();
 		for (String href : results.getItemsHrefs()) {
-			driver.get(href);
-			assertTrue(new ProductPage(driver).isWithReturnCondition());
+			assertTrue(results.getProduct(href).isWithReturnCondition());
 		}
 	}
 }
